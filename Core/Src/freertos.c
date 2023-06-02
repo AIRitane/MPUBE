@@ -48,7 +48,7 @@
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
-osThreadId mpu6050Handle;
+osThreadId mpuHandle;
 osThreadId fsmHandle;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,7 +57,7 @@ osThreadId fsmHandle;
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
-extern void mpu6050_task(void const * argument);
+extern void mpu_task(void const * argument);
 extern void fsm_task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -109,9 +109,9 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(defaultTask, StartDefaultTask, osPriorityIdle, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-  /* definition and creation of mpu6050 */
-  osThreadDef(mpu6050, mpu6050_task, osPriorityNormal, 0, 256);
-  mpu6050Handle = osThreadCreate(osThread(mpu6050), NULL);
+  /* definition and creation of mpu */
+  osThreadDef(mpu, mpu_task, osPriorityNormal, 0, 256);
+  mpuHandle = osThreadCreate(osThread(mpu), NULL);
 
   /* definition and creation of fsm */
   osThreadDef(fsm, fsm_task, osPriorityNormal, 0, 256);
